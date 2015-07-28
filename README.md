@@ -1,4 +1,4 @@
-#Task2_muliti_modality_training_data
+Task2_muliti_modality_training_data
 
 Language: Python  
 Ojective:  * Create sequences that has repeatable and different shapes or positions
