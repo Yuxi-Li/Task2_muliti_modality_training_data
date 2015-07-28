@@ -1,0 +1,67 @@
+#! /usr/bin/env python
+# -*- coding:utf-8 -*-
+
+import math
+import random
+
+att_num = 4
+data_num = 1 * att_num
+seed = 2
+random.seed(seed)
+
+def make_file(id):
+    id_s = str(id)
+    id_s = id_s.rjust(6, "0")
+    filename = "target" + id_s + ".txt"
+    file = open(filename, "w")
+    return file
+
+def get_trajectory(symbol, theta):
+    
+    if symbol % 4 == 0:
+        noise_x = random.gauss(0, 0.001)
+        noise_y = random.gauss(0, 0.1)
+    if symbol % 4 == 1:
+        noise_x = random.gauss(0, 0.001)
+        noise_y = random.gauss(0, 0.1)
+    if symbol % 4 == 2:
+        noise_x = random.gauss(0, 0.001)
+        noise_y = random.gauss(0, 0.1)
+    if symbol % 4 == 3:
+        noise_x = random.gauss(0, 0.001)
+        noise_y = random.gauss(0, 0.1)
+    
+   
+    x_r = - 0.4 * (math.cos(theta) - 1) + noise_x
+    y_r = 0.8 * math.sin(theta) + noise_y
+    x_r2 = - 0.4 * (math.cos(2 * theta) - 1) + noise_x
+    y_r2 = 0.8 * math.sin(2 * theta) + noise_y
+    if symbol % att_num == 0:
+        return x_r, y_r
+    elif symbol % att_num == 1:
+        return - x_r, y_r
+    elif symbol % att_num == 2:
+        return x_r, y_r2
+    elif symbol % att_num == 3:
+        return -x_r, y_r2
+
+def print_circle_switching(symbol, file, period, num):
+    #symbol = 0 # 0: A, 1: B
+    #state = symbol
+    for i in range(num):
+        #symbol = random.randint(0, 1)
+        print symbol % att_num,
+        for j in range(1):
+            for k in range(period):
+                theta = k * 2.0 * math.pi / period
+                x, y = get_trajectory(symbol, theta)
+                file.write("%f\t%f\n" % (x, y))
+        
+def main():
+    for i in range(data_num):
+        print "%06d" % i,
+        file = make_file(i)
+        print_circle_switching(i, file, 25, 40)
+        print ""
+if __name__ == "__main__":
+    main()
